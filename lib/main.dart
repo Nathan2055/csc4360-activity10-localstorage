@@ -30,7 +30,7 @@ class _DatabaseExampleState extends State<DatabaseExample> {
   final dbHelper = DBHelper.instance;
   final TextEditingController nameController = TextEditingController();
   final TextEditingController descController = TextEditingController();
-  
+
   List<Item> items = [];
 
   void _addItem() async {
@@ -96,7 +96,10 @@ class _DatabaseExampleState extends State<DatabaseExample> {
               ],
             ),
             const SizedBox(height: 20),
-            const Text('Items List:', style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold)),
+            const Text(
+              'Items List:',
+              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            ),
             Expanded(
               child: ListView.builder(
                 itemCount: items.length,
