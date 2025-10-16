@@ -54,6 +54,11 @@ class MyHomePage extends StatelessWidget {
               onPressed: _queryRow2,
               child: const Text('query row 2'),
             ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _deleteAll,
+              child: const Text('delete all rows'),
+            ),
           ],
         ),
       ),
@@ -108,5 +113,11 @@ class MyHomePage extends StatelessWidget {
     final id = await dbHelper.queryRowCount();
     final rowsDeleted = await dbHelper.delete(id);
     debugPrint('deleted $rowsDeleted row(s): row $id');
+  }
+
+  void _deleteAll() async {
+    // Assuming that the number of rows is the id for the last row.
+    final rowsDeleted = await dbHelper.deleteAllRows();
+    debugPrint('deleted all $rowsDeleted row(s)');
   }
 }

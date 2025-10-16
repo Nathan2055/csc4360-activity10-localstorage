@@ -83,4 +83,16 @@ class DatabaseHelper {
   Future<int> delete(int id) async {
     return await _db.delete(table, where: '$columnId = ?', whereArgs: [id]);
   }
+
+  // Deletes all rows, using the queryRowCount() and delete() functions.
+  // The number of affected rows is returned.
+  Future<int> deleteAllRows() async {
+    int count = await queryRowCount();
+    int affectedRows = 0;
+    for (int i = 1; i <= count; i++) {
+      int a = await delete(i);
+      affectedRows = affectedRows + a;
+    }
+    return affectedRows;
+  }
 }
