@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'database/db_helper.dart';
-import 'database/models/item.dart';
+import 'database_helper.dart';
 
-void main() {
+// Here we are using a global variable. You can use something like
+// get_it in a production app.
+final dbHelper = DatabaseHelper();
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  // initialize the database
+  await dbHelper.init();
   runApp(const MyApp());
 }
 
@@ -12,116 +18,73 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Database Demo',
+      title: 'SQFlite Demo',
       theme: ThemeData(primarySwatch: Colors.blue),
-      home: const DatabaseExample(),
+      home: const MyHomePage(),
     );
   }
 }
 
-class DatabaseExample extends StatefulWidget {
-  const DatabaseExample({super.key});
+class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
 
-  @override
-  State<DatabaseExample> createState() => _DatabaseExampleState();
-}
-
-class _DatabaseExampleState extends State<DatabaseExample> {
-  final dbHelper = DBHelper.instance;
-  final TextEditingController nameController = TextEditingController();
-  final TextEditingController descController = TextEditingController();
-
-  List<Item> items = [];
-
-  void _addItem() async {
-    final newItem = Item(
-      name: nameController.text,
-      description: descController.text,
-    );
-    await dbHelper.insertItem(newItem);
-    _refreshItems();
-    _clearTextFields();
-  }
-
-  void _refreshItems() async {
-    final data = await dbHelper.getItems();
-    setState(() {
-      items = data;
-    });
-  }
-
-  void _clearTextFields() {
-    nameController.clear();
-    descController.clear();
-  }
-
-  @override
-  void initState() {
-    super.initState();
-    _refreshItems();
-  }
-
+  // homepage layout
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Database CRUD Example')),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
+      appBar: AppBar(title: const Text('sqflite')),
+      body: Center(
         child: Column(
-          children: [
-            TextField(
-              controller: nameController,
-              decoration: const InputDecoration(hintText: 'Item Name'),
-            ),
-            TextField(
-              controller: descController,
-              decoration: const InputDecoration(hintText: 'Description'),
-            ),
-            const SizedBox(height: 20),
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _addItem,
-                    child: const Text('Add Item'),
-                  ),
-                ),
-                const SizedBox(width: 10),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: _refreshItems,
-                    child: const Text('Refresh List'),
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-            const Text(
-              'Items List:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            Expanded(
-              child: ListView.builder(
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  final item = items[index];
-                  return ListTile(
-                    title: Text(item.name),
-                    subtitle: Text(item.description),
-                    trailing: IconButton(
-                      icon: const Icon(Icons.delete, color: Colors.red),
-                      onPressed: () async {
-                        await dbHelper.deleteItem(item.id!);
-                        _refreshItems();
-                      },
-                    ),
-                  );
-                },
-              ),
-            ),
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(onPressed: _insert, child: const Text('insert')),
+            const SizedBox(height: 10),
+            ElevatedButton(onPressed: _query, child: const Text('query')),
+            const SizedBox(height: 10),
+            ElevatedButton(onPressed: _update, child: const Text('update')),
+            const SizedBox(height: 10),
+            ElevatedButton(onPressed: _delete, child: const Text('delete')),
           ],
         ),
       ),
     );
+  }
+
+  // Button onPressed methods
+
+  void _insert() async {
+    // row to insert
+    Map<String, dynamic> row = {
+      DatabaseHelper.columnName: 'Bob',
+      DatabaseHelper.columnAge: 23,
+    };
+    final id = await dbHelper.insert(row);
+    debugPrint('inserted row id: $id');
+  }
+
+  void _query() async {
+    final allRows = await dbHelper.queryAllRows();
+    debugPrint('query all rows:');
+    for (final row in allRows) {
+      debugPrint(row.toString());
+    }
+  }
+
+  void _update() async {
+    // row to update
+    Map<String, dynamic> row = {
+      DatabaseHelper.columnId: 1,
+      DatabaseHelper.columnName: 'Mary',
+      DatabaseHelper.columnAge: 32,
+    };
+    final rowsAffected = await dbHelper.update(row);
+    debugPrint('updated $rowsAffected row(s)');
+  }
+
+  void _delete() async {
+    // Assuming that the number of rows is the id for the last row.
+    final id = await dbHelper.queryRowCount();
+    final rowsDeleted = await dbHelper.delete(id);
+    debugPrint('deleted $rowsDeleted row(s): row $id');
   }
 }
