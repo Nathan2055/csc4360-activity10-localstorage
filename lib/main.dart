@@ -185,7 +185,13 @@ class _DatabaseAppState extends State<DatabaseApp> {
                       ),
                       child: const Text('Add a new row'),
                     ),
-                    const SizedBox(width: 16),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
                     ElevatedButton(
                       onPressed: _update,
                       style: ElevatedButton.styleFrom(
@@ -209,7 +215,13 @@ class _DatabaseAppState extends State<DatabaseApp> {
                       ),
                       child: const Text('Delete last row'),
                     ),
-                    const SizedBox(width: 16),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
                     ElevatedButton(
                       onPressed: _deleteAll,
                       style: ElevatedButton.styleFrom(
