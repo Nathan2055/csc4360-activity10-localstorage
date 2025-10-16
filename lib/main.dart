@@ -134,6 +134,7 @@ class _DatabaseAppState extends State<DatabaseApp> {
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ElevatedButton(
@@ -148,6 +149,7 @@ class _DatabaseAppState extends State<DatabaseApp> {
                 ),
                 const SizedBox(height: 16),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     Expanded(
@@ -172,6 +174,7 @@ class _DatabaseAppState extends State<DatabaseApp> {
                 ),
                 const SizedBox(height: 32),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ElevatedButton(
@@ -195,6 +198,7 @@ class _DatabaseAppState extends State<DatabaseApp> {
                 ),
                 const SizedBox(height: 32),
                 Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
                     ElevatedButton(
@@ -203,7 +207,7 @@ class _DatabaseAppState extends State<DatabaseApp> {
                         foregroundColor: Colors.white,
                         backgroundColor: Colors.red,
                       ),
-                      child: const Text('Delete last row added'),
+                      child: const Text('Delete last row'),
                     ),
                     const SizedBox(width: 16),
                     ElevatedButton(
