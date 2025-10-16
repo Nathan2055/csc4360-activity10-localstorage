@@ -205,12 +205,7 @@ class _DatabaseAppState extends State<DatabaseApp> {
                       ),
                       child: const Text('Delete last row added'),
                     ),
-                  ],
-                ),
-                const SizedBox(height: 16),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
+                    const SizedBox(width: 16),
                     ElevatedButton(
                       onPressed: _deleteAll,
                       style: ElevatedButton.styleFrom(
