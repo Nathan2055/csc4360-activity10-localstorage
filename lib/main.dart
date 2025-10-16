@@ -18,6 +18,11 @@ class DatabaseApp extends StatefulWidget {
 }
 
 class _DatabaseAppState extends State<DatabaseApp> {
+  // Theme control variables
+  ThemeMode _themeMode = ThemeMode.light;
+  bool darkMode = false;
+
+  // Text box control variables
   late TextEditingController _controller;
   String inputString = '';
 
@@ -107,53 +112,79 @@ class _DatabaseAppState extends State<DatabaseApp> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('sqflite')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(onPressed: _insert, child: const Text('insert')),
-            const SizedBox(height: 10),
-            ElevatedButton(onPressed: _query, child: const Text('query')),
-            const SizedBox(height: 10),
-            ElevatedButton(onPressed: _update, child: const Text('update')),
-            const SizedBox(height: 10),
-            ElevatedButton(onPressed: _delete, child: const Text('delete')),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _queryRow1,
-              child: const Text('query row 1'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _queryRow2,
-              child: const Text('query row 2'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _deleteAll,
-              child: const Text('delete all rows'),
-            ),
-
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                TextField(
-                  controller: _controller,
-                  decoration: InputDecoration(
-                    border: OutlineInputBorder(),
-                    hintText: 'Row id to query',
-                  ),
-                ),
-                SizedBox(height: 16.0),
-                ElevatedButton(
-                  onPressed: _acceptInput,
-                  child: Text('Query Row'),
-                ),
-              ],
+    return MaterialApp(
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: _themeMode,
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: const Text('sqflite'),
+          actions: <Widget>[
+            IconButton(
+              // if dark mode, show sun; if light mode, show moon
+              icon: darkMode
+                  ? const Icon(Icons.sunny)
+                  : const Icon(Icons.mode_night),
+              // same idea for the tooltip text
+              tooltip: darkMode ? 'Light Mode' : 'Dark Mode',
+              onPressed: () {
+                setState(() {
+                  // if on, switch to light mode; if off, switch to dark mode
+                  _themeMode = darkMode ? ThemeMode.light : ThemeMode.dark;
+                  darkMode = !darkMode;
+                });
+              },
             ),
           ],
+        ),
+        body: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: <Widget>[
+              ElevatedButton(onPressed: _insert, child: const Text('insert')),
+              const SizedBox(height: 10),
+              ElevatedButton(onPressed: _query, child: const Text('query')),
+              const SizedBox(height: 10),
+              ElevatedButton(onPressed: _update, child: const Text('update')),
+              const SizedBox(height: 10),
+              ElevatedButton(onPressed: _delete, child: const Text('delete')),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: _queryRow1,
+                child: const Text('query row 1'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: _queryRow2,
+                child: const Text('query row 2'),
+              ),
+              const SizedBox(height: 10),
+              ElevatedButton(
+                onPressed: _deleteAll,
+                child: const Text('delete all rows'),
+              ),
+
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: <Widget>[
+                  TextField(
+                    controller: _controller,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(),
+                      hintText: 'Row id to query',
+                    ),
+                  ),
+                  SizedBox(height: 16.0),
+                  ElevatedButton(
+                    onPressed: _acceptInput,
+                    child: Text('Query Row'),
+                  ),
+                ],
+              ),
+            ],
+          ),
         ),
       ),
     );
