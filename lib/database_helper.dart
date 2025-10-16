@@ -51,10 +51,10 @@ class DatabaseHelper {
     return await _db.query(table);
   }
 
-  // All of the rows are returned as a list of maps, where each map is
+  // The specific row requested is returned as a map, where the map is
   // a key-value list of columns.
   Future<Map<String, dynamic>> querySpecificRow(int row) async {
-    row = row - 1;
+    row = row - 1; // rows are indexed at 1, lists are indexed at 0
     var temp = await _db.query(table);
     return temp[row];
   }
@@ -82,5 +82,17 @@ class DatabaseHelper {
   // returned. This should be 1 as long as the row exists.
   Future<int> delete(int id) async {
     return await _db.delete(table, where: '$columnId = ?', whereArgs: [id]);
+  }
+
+  // Deletes all rows, using the queryRowCount() and delete() functions.
+  // The number of affected rows is returned.
+  Future<int> deleteAllRows() async {
+    int count = await queryRowCount();
+    int affectedRows = 0;
+    for (int i = 1; i <= count; i++) {
+      int a = await delete(i);
+      affectedRows = affectedRows + a;
+    }
+    return affectedRows;
   }
 }

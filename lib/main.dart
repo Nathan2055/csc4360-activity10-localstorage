@@ -9,58 +9,36 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // initialize the database
   await dbHelper.init();
-  runApp(const MyApp());
+  runApp(MaterialApp(home: DatabaseApp()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class DatabaseApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'SQFlite Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const MyHomePage(),
-    );
-  }
+  _DatabaseAppState createState() => _DatabaseAppState();
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class _DatabaseAppState extends State<DatabaseApp> {
+  // Theme control variables
+  ThemeMode _themeMode = ThemeMode.light;
+  bool darkMode = false;
 
-  // homepage layout
+  // Text box control variables
+  late TextEditingController _controller;
+  String inputString = '';
+
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('sqflite')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(onPressed: _insert, child: const Text('insert')),
-            const SizedBox(height: 10),
-            ElevatedButton(onPressed: _query, child: const Text('query')),
-            const SizedBox(height: 10),
-            ElevatedButton(onPressed: _update, child: const Text('update')),
-            const SizedBox(height: 10),
-            ElevatedButton(onPressed: _delete, child: const Text('delete')),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _queryRow1,
-              child: const Text('query row 1'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _queryRow2,
-              child: const Text('query row 2'),
-            ),
-          ],
-        ),
-      ),
-    );
+  void initState() {
+    super.initState();
+
+    // Initialize controller for the text field
+    _controller = TextEditingController();
   }
 
-  // Button onPressed methods
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   void _insert() async {
     // row to insert
@@ -80,18 +58,6 @@ class MyHomePage extends StatelessWidget {
     }
   }
 
-  void _queryRow1() async {
-    final row1 = await dbHelper.querySpecificRow(1);
-    debugPrint('query row 1:');
-    debugPrint(row1.toString());
-  }
-
-  void _queryRow2() async {
-    final row2 = await dbHelper.querySpecificRow(2);
-    debugPrint('query row 2:');
-    debugPrint(row2.toString());
-  }
-
   void _update() async {
     // row to update
     Map<String, dynamic> row = {
@@ -108,5 +74,153 @@ class MyHomePage extends StatelessWidget {
     final id = await dbHelper.queryRowCount();
     final rowsDeleted = await dbHelper.delete(id);
     debugPrint('deleted $rowsDeleted row(s): row $id');
+  }
+
+  void _deleteAll() async {
+    // Assuming that the number of rows is the id for the last row.
+    final rowsDeleted = await dbHelper.deleteAllRows();
+    debugPrint('deleted all $rowsDeleted row(s)');
+  }
+
+  void _acceptInput() async {
+    setState(() {
+      inputString = _controller.text;
+    });
+
+    int? idTest = int.tryParse(inputString);
+    if (idTest == null) {
+      debugPrint('invalid input');
+    } else {
+      int id = int.parse(inputString);
+      var row = await dbHelper.querySpecificRow(id);
+      debugPrint('query row $id:');
+      debugPrint(row.toString());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData.light(),
+      darkTheme: ThemeData.dark(),
+      themeMode: _themeMode,
+      debugShowCheckedModeBanner: false,
+      home: Scaffold(
+        appBar: AppBar(
+          automaticallyImplyLeading: false,
+          title: const Text('sqflite'),
+          actions: <Widget>[
+            IconButton(
+              // if dark mode, show sun; if light mode, show moon
+              icon: darkMode
+                  ? const Icon(Icons.sunny)
+                  : const Icon(Icons.mode_night),
+              // same idea for the tooltip text
+              tooltip: darkMode ? 'Light Mode' : 'Dark Mode',
+              onPressed: () {
+                setState(() {
+                  // if on, switch to light mode; if off, switch to dark mode
+                  _themeMode = darkMode ? ThemeMode.light : ThemeMode.dark;
+                  darkMode = !darkMode;
+                });
+              },
+            ),
+          ],
+        ),
+        body: Center(
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(64.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _query,
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.blue,
+                      ),
+                      child: const Text('Query all rows'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Row id to query',
+                        ),
+                      ),
+                    ),
+                    const SizedBox(width: 16.0),
+                    ElevatedButton(
+                      onPressed: _acceptInput,
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.blue,
+                      ),
+                      child: Text('Query'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _insert,
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.green,
+                      ),
+                      child: const Text('Add a new row'),
+                    ),
+                    const SizedBox(width: 16),
+                    ElevatedButton(
+                      onPressed: _update,
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.green,
+                      ),
+                      child: const Text('Update row 1'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _delete,
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.red,
+                      ),
+                      child: const Text('Delete last row added'),
+                    ),
+                    const SizedBox(width: 16),
+                    ElevatedButton(
+                      onPressed: _deleteAll,
+                      style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
+                        backgroundColor: Colors.red,
+                      ),
+                      child: const Text('Delete all rows'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }
