@@ -139,6 +139,7 @@ class _DatabaseAppState extends State<DatabaseApp> {
                     ElevatedButton(
                       onPressed: _query,
                       style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
                         backgroundColor: Colors.blue,
                       ),
                       child: const Text('Query all rows'),
@@ -162,6 +163,7 @@ class _DatabaseAppState extends State<DatabaseApp> {
                     ElevatedButton(
                       onPressed: _acceptInput,
                       style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
                         backgroundColor: Colors.blue,
                       ),
                       child: Text('Query'),
@@ -175,6 +177,7 @@ class _DatabaseAppState extends State<DatabaseApp> {
                     ElevatedButton(
                       onPressed: _insert,
                       style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
                         backgroundColor: Colors.green,
                       ),
                       child: const Text('Add a new row'),
@@ -183,6 +186,7 @@ class _DatabaseAppState extends State<DatabaseApp> {
                     ElevatedButton(
                       onPressed: _update,
                       style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
                         backgroundColor: Colors.green,
                       ),
                       child: const Text('Update row 1'),
@@ -196,6 +200,7 @@ class _DatabaseAppState extends State<DatabaseApp> {
                     ElevatedButton(
                       onPressed: _delete,
                       style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
                         backgroundColor: Colors.red,
                       ),
                       child: const Text('Delete last row added'),
@@ -209,6 +214,7 @@ class _DatabaseAppState extends State<DatabaseApp> {
                     ElevatedButton(
                       onPressed: _deleteAll,
                       style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.white,
                         backgroundColor: Colors.red,
                       ),
                       child: const Text('Delete all rows'),
