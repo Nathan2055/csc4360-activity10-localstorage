@@ -138,46 +138,14 @@ class _DatabaseAppState extends State<DatabaseApp> {
                   children: <Widget>[
                     ElevatedButton(
                       onPressed: _query,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                      ),
                       child: const Text('Query all rows'),
                     ),
                   ],
                 ),
-                const SizedBox(height: 32),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ElevatedButton(
-                      onPressed: _insert,
-                      child: const Text('Add a new row'),
-                    ),
-                    const SizedBox(width: 16),
-                    ElevatedButton(
-                      onPressed: _update,
-                      child: const Text('Update row 1'),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 32),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ElevatedButton(
-                      onPressed: _delete,
-                      child: const Text('Delete last row added'),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 32),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: <Widget>[
-                    ElevatedButton(
-                      onPressed: _deleteAll,
-                      child: const Text('Delete all rows'),
-                    ),
-                  ],
-                ),
-                const SizedBox(height: 32),
+                const SizedBox(height: 16),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -193,7 +161,57 @@ class _DatabaseAppState extends State<DatabaseApp> {
                     const SizedBox(width: 16.0),
                     ElevatedButton(
                       onPressed: _acceptInput,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.blue,
+                      ),
                       child: Text('Query'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _insert,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                      ),
+                      child: const Text('Add a new row'),
+                    ),
+                    const SizedBox(width: 16),
+                    ElevatedButton(
+                      onPressed: _update,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.green,
+                      ),
+                      child: const Text('Update row 1'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _delete,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                      child: const Text('Delete last row added'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _deleteAll,
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: Colors.red,
+                      ),
+                      child: const Text('Delete all rows'),
                     ),
                   ],
                 ),
