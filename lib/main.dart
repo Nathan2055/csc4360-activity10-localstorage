@@ -9,63 +9,31 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   // initialize the database
   await dbHelper.init();
-  runApp(const MyApp());
+  runApp(MaterialApp(home: DatabaseApp()));
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
+class DatabaseApp extends StatefulWidget {
   @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'SQFlite Demo',
-      theme: ThemeData(primarySwatch: Colors.blue),
-      home: const MyHomePage(),
-    );
-  }
+  _DatabaseAppState createState() => _DatabaseAppState();
 }
 
-class MyHomePage extends StatelessWidget {
-  const MyHomePage({super.key});
+class _DatabaseAppState extends State<DatabaseApp> {
+  late TextEditingController _controller;
+  String inputString = '';
 
-  // homepage layout
   @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: const Text('sqflite')),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            ElevatedButton(onPressed: _insert, child: const Text('insert')),
-            const SizedBox(height: 10),
-            ElevatedButton(onPressed: _query, child: const Text('query')),
-            const SizedBox(height: 10),
-            ElevatedButton(onPressed: _update, child: const Text('update')),
-            const SizedBox(height: 10),
-            ElevatedButton(onPressed: _delete, child: const Text('delete')),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _queryRow1,
-              child: const Text('query row 1'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _queryRow2,
-              child: const Text('query row 2'),
-            ),
-            const SizedBox(height: 10),
-            ElevatedButton(
-              onPressed: _deleteAll,
-              child: const Text('delete all rows'),
-            ),
-          ],
-        ),
-      ),
-    );
+  void initState() {
+    super.initState();
+
+    // Initialize controller for the text field
+    _controller = TextEditingController();
   }
 
-  // Button onPressed methods
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
 
   void _insert() async {
     // row to insert
@@ -119,5 +87,75 @@ class MyHomePage extends StatelessWidget {
     // Assuming that the number of rows is the id for the last row.
     final rowsDeleted = await dbHelper.deleteAllRows();
     debugPrint('deleted all $rowsDeleted row(s)');
+  }
+
+  void _acceptInput() async {
+    setState(() {
+      inputString = _controller.text;
+    });
+
+    int? idTest = int.tryParse(inputString);
+    if (idTest == null) {
+      debugPrint('invalid input');
+    } else {
+      int id = int.parse(inputString);
+      var row = await dbHelper.querySpecificRow(id);
+      debugPrint('query row $id:');
+      debugPrint(row.toString());
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(title: const Text('sqflite')),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: <Widget>[
+            ElevatedButton(onPressed: _insert, child: const Text('insert')),
+            const SizedBox(height: 10),
+            ElevatedButton(onPressed: _query, child: const Text('query')),
+            const SizedBox(height: 10),
+            ElevatedButton(onPressed: _update, child: const Text('update')),
+            const SizedBox(height: 10),
+            ElevatedButton(onPressed: _delete, child: const Text('delete')),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _queryRow1,
+              child: const Text('query row 1'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _queryRow2,
+              child: const Text('query row 2'),
+            ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _deleteAll,
+              child: const Text('delete all rows'),
+            ),
+
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                TextField(
+                  controller: _controller,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(),
+                    hintText: 'Row id to query',
+                  ),
+                ),
+                SizedBox(height: 16.0),
+                ElevatedButton(
+                  onPressed: _acceptInput,
+                  child: Text('Query Row'),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
