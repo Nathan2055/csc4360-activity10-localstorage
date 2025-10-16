@@ -26,8 +26,6 @@ class _DatabaseAppState extends State<DatabaseApp> {
   late TextEditingController _controller;
   String inputString = '';
 
-  static const SizedBox spacer = SizedBox(height: 10);
-
   @override
   void initState() {
     super.initState();
@@ -58,18 +56,6 @@ class _DatabaseAppState extends State<DatabaseApp> {
     for (final row in allRows) {
       debugPrint(row.toString());
     }
-  }
-
-  void _queryRow1() async {
-    final row1 = await dbHelper.querySpecificRow(1);
-    debugPrint('query row 1:');
-    debugPrint(row1.toString());
-  }
-
-  void _queryRow2() async {
-    final row2 = await dbHelper.querySpecificRow(2);
-    debugPrint('query row 2:');
-    debugPrint(row2.toString());
   }
 
   void _update() async {
@@ -147,28 +133,51 @@ class _DatabaseAppState extends State<DatabaseApp> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                ElevatedButton(onPressed: _insert, child: const Text('insert')),
-                spacer,
-                ElevatedButton(onPressed: _query, child: const Text('query')),
-                spacer,
-                ElevatedButton(onPressed: _update, child: const Text('update')),
-                spacer,
-                ElevatedButton(onPressed: _delete, child: const Text('delete')),
-                spacer,
-                ElevatedButton(
-                  onPressed: _queryRow1,
-                  child: const Text('query row 1'),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _query,
+                      child: const Text('Query all rows'),
+                    ),
+                  ],
                 ),
-                spacer,
-                ElevatedButton(
-                  onPressed: _queryRow2,
-                  child: const Text('query row 2'),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _insert,
+                      child: const Text('Add a new row'),
+                    ),
+                    const SizedBox(width: 16),
+                    ElevatedButton(
+                      onPressed: _update,
+                      child: const Text('Update row 1'),
+                    ),
+                  ],
                 ),
-                spacer,
-                ElevatedButton(
-                  onPressed: _deleteAll,
-                  child: const Text('delete all rows'),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _delete,
+                      child: const Text('Delete last row added'),
+                    ),
+                  ],
                 ),
+                const SizedBox(height: 32),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    ElevatedButton(
+                      onPressed: _deleteAll,
+                      child: const Text('Delete all rows'),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 32),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: <Widget>[
@@ -181,10 +190,10 @@ class _DatabaseAppState extends State<DatabaseApp> {
                         ),
                       ),
                     ),
-                    SizedBox(height: 16.0),
+                    const SizedBox(width: 16.0),
                     ElevatedButton(
                       onPressed: _acceptInput,
-                      child: Text('Query Row'),
+                      child: Text('Query'),
                     ),
                   ],
                 ),
