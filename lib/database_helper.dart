@@ -54,6 +54,7 @@ class DatabaseHelper {
   // All of the rows are returned as a list of maps, where each map is
   // a key-value list of columns.
   Future<Map<String, dynamic>> querySpecificRow(int row) async {
+    row = row - 1;
     var temp = await _db.query(table);
     return temp[row];
   }

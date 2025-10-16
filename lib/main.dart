@@ -49,6 +49,11 @@ class MyHomePage extends StatelessWidget {
               onPressed: _queryRow1,
               child: const Text('query row 1'),
             ),
+            const SizedBox(height: 10),
+            ElevatedButton(
+              onPressed: _queryRow2,
+              child: const Text('query row 2'),
+            ),
           ],
         ),
       ),
@@ -77,8 +82,14 @@ class MyHomePage extends StatelessWidget {
 
   void _queryRow1() async {
     final row1 = await dbHelper.querySpecificRow(1);
-    debugPrint('query all rows:');
+    debugPrint('query row 1:');
     debugPrint(row1.toString());
+  }
+
+  void _queryRow2() async {
+    final row2 = await dbHelper.querySpecificRow(2);
+    debugPrint('query row 2:');
+    debugPrint(row2.toString());
   }
 
   void _update() async {
