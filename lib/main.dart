@@ -26,6 +26,8 @@ class _DatabaseAppState extends State<DatabaseApp> {
   late TextEditingController _controller;
   String inputString = '';
 
+  static const SizedBox spacer = SizedBox(height: 10);
+
   @override
   void initState() {
     super.initState();
@@ -140,50 +142,54 @@ class _DatabaseAppState extends State<DatabaseApp> {
           ],
         ),
         body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: <Widget>[
-              ElevatedButton(onPressed: _insert, child: const Text('insert')),
-              const SizedBox(height: 10),
-              ElevatedButton(onPressed: _query, child: const Text('query')),
-              const SizedBox(height: 10),
-              ElevatedButton(onPressed: _update, child: const Text('update')),
-              const SizedBox(height: 10),
-              ElevatedButton(onPressed: _delete, child: const Text('delete')),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: _queryRow1,
-                child: const Text('query row 1'),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: _queryRow2,
-                child: const Text('query row 2'),
-              ),
-              const SizedBox(height: 10),
-              ElevatedButton(
-                onPressed: _deleteAll,
-                child: const Text('delete all rows'),
-              ),
-
-              Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: <Widget>[
-                  TextField(
-                    controller: _controller,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(),
-                      hintText: 'Row id to query',
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(64.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                ElevatedButton(onPressed: _insert, child: const Text('insert')),
+                spacer,
+                ElevatedButton(onPressed: _query, child: const Text('query')),
+                spacer,
+                ElevatedButton(onPressed: _update, child: const Text('update')),
+                spacer,
+                ElevatedButton(onPressed: _delete, child: const Text('delete')),
+                spacer,
+                ElevatedButton(
+                  onPressed: _queryRow1,
+                  child: const Text('query row 1'),
+                ),
+                spacer,
+                ElevatedButton(
+                  onPressed: _queryRow2,
+                  child: const Text('query row 2'),
+                ),
+                spacer,
+                ElevatedButton(
+                  onPressed: _deleteAll,
+                  child: const Text('delete all rows'),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: <Widget>[
+                    Expanded(
+                      child: TextField(
+                        controller: _controller,
+                        decoration: InputDecoration(
+                          border: OutlineInputBorder(),
+                          hintText: 'Row id to query',
+                        ),
+                      ),
                     ),
-                  ),
-                  SizedBox(height: 16.0),
-                  ElevatedButton(
-                    onPressed: _acceptInput,
-                    child: Text('Query Row'),
-                  ),
-                ],
-              ),
-            ],
+                    SizedBox(height: 16.0),
+                    ElevatedButton(
+                      onPressed: _acceptInput,
+                      child: Text('Query Row'),
+                    ),
+                  ],
+                ),
+              ],
+            ),
           ),
         ),
       ),
