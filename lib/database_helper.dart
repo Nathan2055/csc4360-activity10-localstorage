@@ -51,6 +51,13 @@ class DatabaseHelper {
     return await _db.query(table);
   }
 
+  // All of the rows are returned as a list of maps, where each map is
+  // a key-value list of columns.
+  Future<Map<String, dynamic>> querySpecificRow(int row) async {
+    var temp = await _db.query(table);
+    return temp[row];
+  }
+
   // All of the methods (insert, query, update, delete) can also be done using
   // raw SQL commands. This method uses a raw query to give the row count.
   Future<int> queryRowCount() async {
