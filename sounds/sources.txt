@@ -1,0 +1,35 @@
+dramatic-organ-a.wav:
+- URL: https://freesound.org/people/InspectorJ/sounds/402095/
+- Date: 14 September 2017
+- Author: InspectorJ
+- License: CC BY 4.0
+
+dramatic-organ-b.wav:
+- URL: https://freesound.org/people/InspectorJ/sounds/401707/
+- Date: 8 September 2017
+- Author: InspectorJ
+- License: CC BY 4.0
+
+howling-wind.wav:
+- URL: https://freesound.org/people/mistersherlock/sounds/159509/
+- Date: 24 June 2012
+- Author: mistersherlock
+- License: CC0
+
+evil-laugh-1.wav:
+- URL: https://freesound.org/people/Leady/sounds/26729/
+- Date: 3 December 2006
+- Author: Leady
+- License: CC BY 3.0
+
+evil-laugh-2.wav:
+- URL: https://freesound.org/people/klankbeeld/sounds/133674/
+- Date: 6 November 2011
+- Author: klankbeeld
+- License: CC BY 4.0
+
+evil-laugh-3.wav:
+- URL: https://freesound.org/people/Nanakisan/sounds/132802/
+- Date: 31 October 2011
+- Author: Nanakisan
+- License: CC BY 4.0
